@@ -1,0 +1,6 @@
+/**/*.asv
+/**/*mod*.m
+/data
+/**/my_least_square.m
+/**/my_least/square_mod.m
+
