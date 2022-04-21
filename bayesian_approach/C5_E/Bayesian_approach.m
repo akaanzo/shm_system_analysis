@@ -131,7 +131,7 @@ T = Tinn;
 
 % fprintf('ADDING RANDOME NOISE TO DATA...\n');
 % 
-% s = s + (rand(length(s), 1) - 1/2) .* s .* cs;
+s = s + (rand(length(s), 1) - 1/2) .* s .* cs;
 % T = T + [0; rand(length(T) - 1, 1)] .* abs(T) .* cT;
 
 %% Plot

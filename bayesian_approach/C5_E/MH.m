@@ -6,9 +6,9 @@ N=10000; % number of samples
 N1=N/10; 
 
 theta0=[0;0;0;0]; % initial parameters value (row vector: {e0; alpha; m; sigma_LH})
-% sigma=diag([2,1,10/365,1].^2) % error diagonal matrix (sigma_e0 = 2, sigma_alpha = 1, sigma_m = 10/365, sigma_LH = 1)
+sigma=diag([2,1,10/365,1].^2) % error diagonal matrix (sigma_e0 = 2, sigma_alpha = 1, sigma_m = 10/365, sigma_LH = 1)
 % sigma=diag([2,0.12704,0.00598,1.529527].^2) 
-sigma=diag([1,1,1,1].^2)
+% sigma=diag([1,1,1,1].^2)
 
 sample     =zeros(length(theta0),N); % matrix of random sample. Foreach parameter N random sample need to be created. Row_num = param_num. Col_num = N
 sample(:,1)=theta0; % program initialization: first column is theta0 parameters
