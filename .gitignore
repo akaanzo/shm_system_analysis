@@ -1,3 +1,4 @@
+*.pdf
 *.asv
 /data
 **_mod**.m
