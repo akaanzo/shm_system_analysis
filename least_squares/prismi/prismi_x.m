@@ -10,6 +10,10 @@ fontsize=18;
 linethick=0.5;
 format long
 
+%%
+cs = 2e-5; % strain random noise amplification percentage on the mean value;
+cT = 5/100; % temperature random noise amplification percentage on the mean value;  
+
 %% Formatwidth
 timeformat='dd-mm-yyyy HH:MM:SS';
 dateformat='dd-mm-yyyy';
@@ -31,17 +35,17 @@ Sdata=xlsread('../../data/prismi/9S1N.xlsx');
 % Sdata=xlsread('../../data/prismi/9S2S.xlsx');
 Tdata = xlsread('../../data/T_C5_E_B0C.xlsx'); % Column 5 (inner) & 6 (outer) for  thermocouple
 
-figure(100)
-plot(Sdata(:, 1), Sdata(:, 2)-Sdata(1, 2), '-b','LineWidth', linethick)
-hold on
-plot(Sdata(:, 1), Sdata(:, 3)-Sdata(1, 3), '-r', 'LineWidth', linethick)
-plot(Sdata(:, 1), Sdata(:, 4)-Sdata(1, 4), '-g', 'LineWidth', linethick)
-xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\Delta u [mm]','FontSize',fontsize,'FontName','Times New Roman');
-datetick('x',dateformat);
-legend('ux', 'uy', 'uz', 'FontSize', fontsize)
-grid on
-hold off
+% figure(100)
+% plot(Sdata(:, 1), Sdata(:, 2)-Sdata(1, 2), '-b','LineWidth', linethick)
+% hold on
+% plot(Sdata(:, 1), Sdata(:, 3)-Sdata(1, 3), '-r', 'LineWidth', linethick)
+% plot(Sdata(:, 1), Sdata(:, 4)-Sdata(1, 4), '-g', 'LineWidth', linethick)
+% xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
+% ylabel('\Delta u [mm]','FontSize',fontsize,'FontName','Times New Roman');
+% datetick('x',dateformat);
+% legend('ux', 'uy', 'uz', 'FontSize', fontsize)
+% grid on
+% hold off
 
 %% Saving data to matlab format mat
 
@@ -76,9 +80,9 @@ tT = Tsdata(:,1);
 
 fprintf('SELECTING DATA WITH SAME TIME...\n');
 
-[I1, I2] = find(abs(ts - tT.') <= 1/288); % time difference less than 5 mins
-I1 = unique(I1);
-I2 = unique(I2);
+[I1, I2] = find(abs(ts - tT.') <= 1/48); % time difference less than 30 mins
+% I1 = unique(I1);
+% I2 = unique(I2);
 
 length(I1)
 length(I2)
@@ -86,57 +90,45 @@ length(I2)
 t1 = ts(I1);
 t2 = tT(I2);
 
-s = Ssdata(I1, 4);
-Tinn = Tsdata(I2, 5);
-Tout = Tsdata(I2, 6);
+s = Ssdata(I1, 2); %  2 -> x-direction
 
-check = abs(t1 - t2) <= 1/288;
+check = abs(t1 - t2) <= 1/48;
 
 I = [];
 n = 1;
 for i = 1 : length(check)
-    if check == 0
+    if check == 0   
         I(n) = 0;
         n = n + 1;
     end
 end
 I
 
-for i = 1 : length(Tout)
-    if Tout(i) > 50
-        Tout(i) = Tout(1);
-    end
-end
+T1 = Tsdata(I1, 2);
+T2 = Tsdata(I1, 3);
+T4 = Tsdata(I1, 5);
+T5 = Tsdata(I1, 6);
 
-for i = 1 : length(Tinn)
-    if Tinn(i) > 50
-        Tinn(i) = Tinn(1);
-    end
-end
+%%
+t = t2;
 
 
 %% Purging NaN data
 % fprintf('PURGING NaN DATA...\n');
 % 
-% 
-% [tu, it] = find(t2 <= 737472);
-% t = t2(tu);
-% s = s(tu);
-% Tout = Tout(tu);
-% Tinn = Tinn(tu);
-% 
-% 
-% 
-% [tuu, itt] = find(t2 >= 736992 & t2 <= 737034);
-% Tout(tuu) = Tout(1);
-% Tinn(tuu) = Tinn(1);
+%  
 
+T = (T1 + T2 + T4 + T5)/4; % x-direction
 
-T = Tinn;
-% T = Tout;
-% T = (Tout+Tinn)/2; % mean value
-
-t = t1;
+[tu, it] = find(abs(T - T(1)) < 50);
+t = t2(tu);
+s = s(tu);
+T = T(tu);
+%
+[tuu, itt] = find(t2 <= 737983);
+t = t(tuu);
+s = s(tuu);
+T = T(tuu);
 
 %% devstd strain gauges Colle Isarco
 
@@ -178,7 +170,7 @@ t = t1;
 % save './S/export/stdmeanmod.mat' stdmeanmod;
 % writematrix(stdmeanmod, './S/export/stdmeanmod.csv')
 
-% Plot
+%% Plot
 fprintf('PLOTTING DATA...\n');
 
 % Strain data
@@ -190,9 +182,9 @@ set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 
 subplot(2,1,1)
 hold on
-plot(ts, Ssdata(:, 4) - Ssdata(1, 4),'-r','LineWidth',linethick);
+plot(ts, Ssdata(:, 2) - Ssdata(1, 2),'-r','LineWidth',linethick);
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\Delta\epsilon [\mu\epsilon]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('\Delta x [mm]','FontSize',fontsize,'FontName','Times New Roman');
 datetick('x',dateformat);
 title("Raw strain data");
 grid on
@@ -200,7 +192,7 @@ grid on
 subplot(2,1,2)
 plot(t, s-s(1), '-b', 'LineWidth', linethick);
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\Delta\epsilon [\mu\epsilon]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('\Delta x [mm]','FontSize',fontsize,'FontName','Times New Roman');
 datetick('x',dateformat);
 title("Selected strain data");
 grid on
@@ -218,7 +210,13 @@ set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 
 subplot(2,1,1)
 hold on
-plot(tT(7:end), Tsdata(7:end, 2) - Tsdata(7, 2),'-r','LineWidth',linethick);
+plot(tT(8:end), Tsdata(8:end, 2) - Tsdata(8, 2),'-r','LineWidth',linethick);
+plot(tT(8:end), Tsdata(8:end, 3) - Tsdata(8, 3),'-b','LineWidth',linethick);
+%
+plot(tT(8:end), Tsdata(8:end, 5) - Tsdata(8, 5),'-g','LineWidth',linethick);
+plot(tT(8:end), Tsdata(8:end, 6) - Tsdata(8, 6),'-c','LineWidth',linethick);
+%
+legend("Thermocouple 1", "Thermocouple 2", "Thermocouple 4", "Thermocouple 5");
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
 ylabel('\Delta T [°C]','FontSize',fontsize,'FontName','Times New Roman');
 datetick('x',dateformat)
@@ -228,10 +226,8 @@ grid on
 
 subplot(2,1,2)
 hold on
-plot(t, Tout - Tout(1),'-b','LineWidth',linethick);
-plot(t, Tinn - Tinn(1),'-r','LineWidth',linethick);
-% plot(t, T - T(1),'-g','LineWidth',linethick);
-legend("Thermocouple 5", "Thermocouple 4");
+plot(t, T - T(1),'-r','LineWidth',linethick);
+legend("(T1+T2+T4+T5)/4");
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
 ylabel('\Delta T [°C]','FontSize',fontsize,'FontName','Times New Roman');
 datetick('x',dateformat)
@@ -244,8 +240,8 @@ grid on
 
 %% Compensation
 % Daily compensation (season compensation needs alpha parameter)
-lastmeasure = t(end);
-rec = datenum('01-06-2017 05:00:00', timeformat); % First expected measurement that has to be considered
+                            lastmeasure = t(end);
+rec = datenum('30-07-2016 05:00:00', timeformat); % First expected measurement that has to be considered
 n=1;
 k=1;
 I = [];
@@ -262,10 +258,10 @@ end
 n=n-1;
 n
 %% 
-%n=50; %use this line if you want to set a fixed number of n
+% n=50; %use this line if you want to set a fixed number of n
 
 % ...purged are vectors containing the considered measurements, i.e. those taken around 5 AM
-tpurged=t(I,:);
+tpurged=t(I,:);     
 spurged=s(I,:);
 Tpurged=T(I,:);
 
@@ -285,7 +281,7 @@ subplot(2,1,1)
 hold on
 plot(t, s - s(1),'-r','LineWidth',linethick);
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\Delta\epsilon [\mu\epsilon]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('\Delta x [mm]','FontSize',fontsize,'FontName','Times New Roman');
 datetick('x',dateformat)
 title("Strain data");
 grid on
@@ -294,7 +290,7 @@ subplot(2,1,2)
 hold on
 plot(tpurged, spurged - spurged(1),'-b','LineWidth',linethick);
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\Delta\epsilon [\mu\epsilon]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('\Delta x [mm]','FontSize',fontsize,'FontName','Times New Roman');
 datetick('x',dateformat)
 title("Purged strain data");
 grid on
@@ -345,8 +341,8 @@ format short;
 fprintf('PRINTIG RESULTS...\n\n');
 
 fprintf('Valid measurements = %4.0f\n',L);
-fprintf('E[epsilon0] = %3.5f;     E[m] = %3.5f;      E[alpha] = %3.5f\n',ETHETA(1,1),ETHETA(2,1),ETHETA(3,1)); % Expected values of the parameters
-fprintf('std[epsilon0] = %3.5f;   std[m] = %3.5f;    std[alpha] = %3.5f\n\n',sqrt(SIGMA(1,1)),sqrt(SIGMA(2,2)),sqrt(SIGMA(3,3))); % Standard deviations of the parameters
+fprintf('E[x0] = %3.5f;     E[m] = %3.5f;      E[alpha] = %3.5f\n',ETHETA(1,1),ETHETA(2,1),ETHETA(3,1)); % Expected values of the parameters
+fprintf('std[x0] = %3.5f;   std[m] = %3.5f;    std[alpha] = %3.5f\n\n',sqrt(SIGMA(1,1)),sqrt(SIGMA(2,2)),sqrt(SIGMA(3,3))); % Standard deviations of the parameters
 RO
 
 %% Saving parameters to file
@@ -382,7 +378,7 @@ subplot(2,1,1)
 hold on
 plot(tpurged(1:nd),spurged(1:nd)-spurged(1),'-b');
 xlabel('t');
-ylabel('\Delta\epsilon [\mu\epsilon]');
+ylabel('\Delta x [mm]');
 datetick('x',dateformat)
 title('Purged strain data');
 grid on       
@@ -396,7 +392,7 @@ plot(tpurged(1:nd),mymodel([tpurged(1:nd)-tpurged(1)  zeros(length(tpurged(1:nd)
 plot(tpurged(1:nd),mymodel([tpurged(1:nd)-tpurged(1)  zeros(length(tpurged(1:nd)))],ETHETA-[0; sqrt(SIGMA(2,2)); 0]),':r'); % error estimation below
 
 xlabel('t');
-ylabel('\Delta\epsilon - E[\alpha]\DeltaT [\mu\epsilon]');
+ylabel('\Delta x - E[\alpha]\DeltaT [mm]');
 datetick('x',dateformat)
 title('Purged strain data + linear regression');
 grid on

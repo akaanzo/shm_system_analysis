@@ -2,8 +2,6 @@ function [ETHETA,SIGMA]=MH(X,Y,j)
 
 format short;
 
-global currentFolder;
-
 N=10000; % number of samples
 N1=N/10; 
 
@@ -56,7 +54,7 @@ set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 hold on
 plot(1:size(sample,2),sample(1,:),'-b','LineWidth',linethick);
 xlabel('q','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\epsilon_{0} [\mu\epsilon]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('x_{0} [mm]','FontSize',fontsize,'FontName','Times New Roman');
 xlim([0 N]);
 grid on
 
@@ -65,7 +63,7 @@ set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 hold on
 plot(1:size(sample,2),sample(2,:),'-b','LineWidth',linethick);
 xlabel('q','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\alpha [\mu\epsilon/°C]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('\alpha [mm/°C]','FontSize',fontsize,'FontName','Times New Roman');
 xlim([0 N]);
 grid on
 
@@ -74,7 +72,7 @@ set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 hold on
 plot(1:size(sample,2),sample(3,:),'-b','LineWidth',linethick);
 xlabel('q','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('m [\mu\epsilon/d]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('m [mm/day]','FontSize',fontsize,'FontName','Times New Roman');
 xlim([0 N]);
 grid on
 
@@ -83,12 +81,9 @@ set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 hold on
 plot(1:size(sample,2),sample(4,:),'-b','LineWidth',linethick);
 xlabel('q','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\sigma_{LH} [\mu\epsilon]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('\sigma_{LH} [mm]','FontSize',fontsize,'FontName','Times New Roman');
 xlim([0 N]);
 grid on
-
-cd(currentFolder);
-cd("S/raw/");
 
 % saveas(figure(100+j),[num2str(100+j) '.fig']);
 
@@ -96,13 +91,11 @@ figure(200+j)
 set(gcf,'Color',[1 1 1])
 set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 plot3(sample(1,:),sample(2,:),sample(3,:),'-+','MarkerEdgeColor','b','MarkerSize',linethick*6);
-xlabel('\epsilon0 [\mu\epsilon]','FontSize',fontsize,'FontName','Times New Roman');
-ylabel('\alpha [\mu\epsilon/°C]','FontSize',fontsize,'FontName','Times New Roman');
-zlabel('m [\mu\epsilon/d]','FontSize',fontsize,'FontName','Times New Roman');
+xlabel('x_{0} [mm]','FontSize',fontsize,'FontName','Times New Roman');
+ylabel('\alpha [mm/°C]','FontSize',fontsize,'FontName','Times New Roman');
+zlabel('m [mm/day]','FontSize',fontsize,'FontName','Times New Roman');
 grid on
 % saveas(figure(200+j),[num2str(200+j) '.fig']);
-
-cd(currentFolder);
 
 end
 
