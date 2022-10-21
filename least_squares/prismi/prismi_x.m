@@ -118,13 +118,13 @@ t = t2;
 % 
 %  
 
-T = (T1 + T2 + T4 + T5)/4; % x-direction
+T = (T1 + T2 + T4 + T5)./4; % x-direction
 
 [tu, it] = find(abs(T - T(1)) < 50);
 t = t2(tu);
 s = s(tu);
 T = T(tu);
-%
+% %
 [tuu, itt] = find(t2 <= 737983);
 t = t(tuu);
 s = s(tuu);
@@ -277,7 +277,7 @@ fprintf('PLOTTING PURGED DATA...\n');
 figure(3);
 set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 
-subplot(2,1,1)
+subplot(2,1,1)  
 hold on
 plot(t, s - s(1),'-r','LineWidth',linethick);
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
