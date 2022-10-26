@@ -148,8 +148,8 @@ fprintf('Raw data std mean: %f\n\n', stdmean);
 fprintf('ADDING RANDOME NOISE TO DATA...\n');
 
 % s = s + (rand(length(s), 1) - 1/2) .* s .* cs;
-T1 = T1 + ([0; rand(length(T1) - 1, 1)] - 1/2) .* T1 .* cT;
-T2 = T2 + ([0; rand(length(T2) - 1, 1)] - 1/2) .* T2 .* cT;
+% T1 = T1 + ([0; rand(length(T1) - 1, 1)] - 1/2) .* T1 .* cT;
+% T2 = T2 + ([0; rand(length(T2) - 1, 1)] - 1/2) .* T2 .* cT;
 
 %% devstd strain gauges mod
 

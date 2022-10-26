@@ -126,9 +126,9 @@ Tout(tuu) = Tout(1);
 Tinn(tuu) = Tinn(1);
 
 
-% T = Tinn;
+T = Tinn;
 % T = Tout;
-T = (Tout+Tinn)/2; % mean value
+% T = (Tout+Tinn)/2; % mean value
 
 %% devstd strain gauges Colle Isarco
 
