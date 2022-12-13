@@ -12,7 +12,7 @@ Yhat = mymodel(X, theta); % results of prediction model
 log_lh = sum(log(normpdf(Y,Yhat,theta(4)))); %sum(log(pdf(Y, Yhat, sigma_LH));, Y = epsilon, Yhat = e0 + alpha*dT + m*d t
                                              % sum(log(pdf(z, 0, sigma_LH))
                                              % is the same. z = Y - Yhat
-lp = log_prior + log_lh; % log_posterior = log_prior + log_likelihood                   
+lp = log_prior + log_lh; % log_posterior = log_prior + log_likelihood  
 
 end
 

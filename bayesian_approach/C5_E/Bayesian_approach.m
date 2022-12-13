@@ -133,7 +133,7 @@ T = Tinn;
 
 % fprintf('ADDING RANDOME NOISE TO DATA...\n');
 % 
-% s = s + (rand(length(s), 1) - 1/2) .* s .* cs;
+s = s + (rand(length(s), 1) - 1/2) .* s .* cs;
 % T = T + [0; rand(length(T) - 1, 1)] .* abs(T) .* cT;
 
 %% Plot
@@ -166,7 +166,7 @@ hold off
 
 cd("S/");
 
-saveas(figure(1), 'raw/Fig_01_Strain_Comparison.jpg');
+% saveas(figure(1), 'raw/Fig_01_Strain_Comparison.jpg');
 
 cd(currentFolder);
 
@@ -202,7 +202,7 @@ grid on
 % 
 % 
 cd("S/");
-saveas(figure(2), 'raw/Fig_02_Temp_Comparison.jpg');
+% saveas(figure(2), 'raw/Fig_02_Temp_Comparison.jpg');
 cd(currentFolder);
 
 
@@ -264,7 +264,7 @@ title("Purged strain data");
 grid on
 
 cd("S/");
-saveas(figure(3), 'raw/Fig_03_Strain_Purged_Comparison.jpg');
+% saveas(figure(3), 'raw/Fig_03_Strain_Purged_Comparison.jpg');
 cd(currentFolder);
 
 %% Purge NaN data
@@ -343,7 +343,8 @@ RO
 
     cd("S/raw/");
     
-    saveas(figure(300+j),[num2str(300+j) '.jpg']);
+%     saveas(figure(300+j),[num2str(300+j) '.jpg']);
+    cd(currentFolder)
     
     
     % Plots prior and posterior distributions
@@ -398,6 +399,6 @@ RO
     ylabel('pdf','FontSize',fontsize,'FontName','Times New Roman');
     grid on
     
-    saveas(figure(400+j),[num2str(400+j) '.jpg']);
+%     saveas(figure(400+j),[num2str(400+j) '.jpg']);
 
 cd(currentFolder)
