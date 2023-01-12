@@ -2,7 +2,7 @@ function [ETHETA,SIGMA]=MH(X,Y,j)
 
 format short;
 
-N=10000; % number of samples
+N=1000000; % number of samples
 N1=N/10; 
 
 theta0=[0;0;0;0]; % initial parameters value (row vector: {e0; alpha; m; sigma_LH})

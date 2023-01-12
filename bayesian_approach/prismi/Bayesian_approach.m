@@ -10,7 +10,7 @@ format long
 
 %%
 cs = 2e-5; % strain random noise amplification percentage on the mean value;
-% cT = 5/100; % temperature random noise amplification percentage on the mean value;
+cT = 5/100; % temperature random noise amplification percentage on the mean value;
 
 %% Format
 timeformat='dd-mm-yyyy HH:MM:SS';
@@ -77,7 +77,8 @@ length(I2);
 t1 = ts(I1);
 t2 = tT(I2);
 
-s = Ssdata(I1, 2);
+s = Ssdata(I1, 2); %x-direction
+% s = Ssdata(I1, 4); %z-direction
 Tinn = Tsdata(I2, 5);
 Tout = Tsdata(I2, 6);
 
@@ -106,13 +107,15 @@ I
 % end
 
 
+
 %% Purging NaN data
 % fprintf('PURGING NaN DATA...\n');
 % 
-% 
-% [tu, it] = find(t2 <= 737472);
+% % 
+% [tu, it] = find(t2 <= 737982);
 % t = t2(tu);
 % s = s(tu);
+% I2 = tu;
 % Tout = Tout(tu);
 % Tinn = Tinn(tu);
 
@@ -127,15 +130,19 @@ t=t2;
 % T = Tinn;
 % T = Tout;
 % T = (Tout+Tinn)/2; % mean value
+
+
+
 % T = (Tsdata(I2, 2) + Tsdata(I2, 3))/2 - (Tsdata(I2, 5)+Tsdata(I2, 6))/2; % z-direction
 T = (Tsdata(I2, 2)      + Tsdata(I2, 3) + Tsdata(I2, 5) + Tsdata(I2, 6))/4; % x-direction
+
 
 %% Modified data
 % Adding random error to data
 
 % fprintf('ADDING RANDOME NOISE TO DATA...\n');
 % 
-s = s + (rand(length(s), 1) - 1/2) .* s .* cs;
+% s = s + (rand(length(s), 1) - 1/2) .* s .* cs;
 % T = T + [0; rand(length(T) - 1, 1)] .* abs(T) .* cT;
 
 %% Plot
@@ -150,7 +157,7 @@ set(gca,'FontSize',fontsize,'FontName','Times New Roman')
 
 subplot(2,1,1)
 hold on
-plot(ts, Ssdata(:, 2) - Ssdata(1, 2),'-r','LineWidth',linethick);
+plot(ts, Ssdata(:, 4) - Ssdata(1, 4),'-r','LineWidth',linethick);
 xlabel('t','FontSize',fontsize,'FontName','Times New Roman');
 ylabel('\Delta x [mm]','FontSize',fontsize,'FontName','Times New Roman');
 datetick('x',dateformat);

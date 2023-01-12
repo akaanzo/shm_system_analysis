@@ -7,6 +7,8 @@ function lp = logposterior(theta,X,Y)
                                                                            % pdf(sigma_LH) = cost => log(pdf(sigma_LH)) neglected
 log_prior = log(normpdf(theta(2),12,4)) + log(normpdf(theta(3),0,10/365));
 
+% log_prior = log(normpdf(theta(2),12,4)) + log(normpdf(theta(3),0,10/365)) + log(normpdf(theta(4),0,10/365));
+
 
 Yhat = mymodel(X, theta); % results of prediction model
 log_lh = sum(log(normpdf(Y,Yhat,theta(4)))); %sum(log(pdf(Y, Yhat, sigma_LH));, Y = epsilon, Yhat = e0 + alpha*dT + m*d t
